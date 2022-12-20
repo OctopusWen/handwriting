@@ -5,8 +5,10 @@ const path = require("path");
 const createWindow = () => {
   const win = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 1000,
     webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
       preload: path.join(__dirname, "preload.js"),
     },
   });
@@ -23,17 +25,22 @@ async function handleFileOpen() {
   if (canceled) {
     return;
   }
-  // return filePaths[0];
-  const newName = new Date().getTime() + ".jpg";
+
+  if (
+    path.dirname(filePaths[0]) ===
+    path.join(__dirname, "resource", "background")
+  ) {
+    console.log(path.basename(filePaths[0]));
+    return path.basename(filePaths[0]);
+  }
+
+  let newName = new Date().getTime() + ".jpg";
+  const newPath = path.join(__dirname, "resource", "background", newName);
   try {
-    await copyFile(
-      filePaths[0],
-      path.join(__dirname, "resource", "background", newName),
-      constants.COPYFILE_EXCL
-    );
+    await copyFile(filePaths[0], newPath, constants.COPYFILE_EXCL);
     console.log(newName);
   } catch {
-    console.log("失败");
+    console.log("复制图片失败");
     newName = "";
   } finally {
     return newName;
