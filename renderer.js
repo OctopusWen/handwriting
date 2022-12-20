@@ -21,6 +21,14 @@ function textPaddings(e) {
   text[0].style[e.target.name] = e.target.value + "px";
 }
 
+function showMask(e) {
+  if (e.target.checked) {
+    text[0].style.backgroundColor = "rgba(58, 114, 215, 0.5)";
+  } else {
+    text[0].style.backgroundColor = "transparent";
+  }
+}
+
 // for (let i in textMargins) {
 //   textMargins[i].addEventListener("change", (e) => {
 //     console.log(e.target.value);
@@ -28,3 +36,25 @@ function textPaddings(e) {
 //     text[0].style = { [name]: e.target.value };
 //   });
 // }
+
+var wordSettings = {
+  sizeMax: 15,
+  sizeMin: 10,
+};
+
+function setWord(e) {
+  wordSettings[e.target.name] = +e.target.value;
+}
+
+function handleWord() {
+  let str = text[0].innerText;
+  let out = "";
+  for (let i in str) {
+    let size = Math.round(
+      Math.random() * (wordSettings.sizeMax - wordSettings.sizeMin) +
+        wordSettings.sizeMin
+    );
+    out += `<span style="font-size: ${size}px">${str[i]}</span>`;
+  }
+  text[0].innerHTML = out;
+}

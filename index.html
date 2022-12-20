@@ -2,16 +2,19 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <meta
+    <!-- <meta
       http-equiv="X-Content-Security-Policy"
       content="default-src 'self'; script-src 'self'"
-    />
+    /> -->
     <title>Hello from Electron renderer!</title>
     <script defer src="./renderer.js"></script>
     <link href="./index.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
     <button id="openDialog" onclick="openDialog()">浏览文件</button>
+    <button id="getWords" onclick="handleWord()">word</button>
+
+    <input type="checkbox" name="border" onchange="showMask(event)" />
     <input
       class="textPadding"
       name="paddingTop"
@@ -39,6 +42,20 @@
       type="number"
       onchange="textPaddings(event)"
       placeholder="bottom"
+    />
+    <input
+      class="wordSetting"
+      name="sizeMax"
+      type="number"
+      onchange="setWord(event)"
+      placeholder="max"
+    />
+    <input
+      class="wordSetting"
+      name="sizeMin"
+      type="number"
+      onchange="setWord(event)"
+      placeholder="min"
     />
     <div class="page">
       <div class="content">
