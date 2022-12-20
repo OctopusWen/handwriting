@@ -11,3 +11,8 @@
     max-width: 100%;
     background-clip: content-box;
 }
+
+@font-face {
+    font-family: a;
+    src: url(./resource/font/a.ttf);
+}

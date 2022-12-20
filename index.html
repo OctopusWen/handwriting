@@ -11,10 +11,12 @@
     <link href="./index.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <button id="openDialog" onclick="openDialog()">浏览文件</button>
-    <button id="getWords" onclick="handleWord()">word</button>
+    <button id="openDialog" onclick="openBackgroundDialog()">导入背景</button>
+    <button id="openDialog" onclick="openTTFDialog()">导入字体</button>
+    <button id="getWords" onclick="handleWord()">加载文字</button>
 
-    <input type="checkbox" name="border" onchange="showMask(event)" />
+    <input type="checkbox" name="mask" id="mask" onchange="showMask(event)" />
+    <label for="mask">开启蒙版</label>
     <input
       class="textPadding"
       name="paddingTop"
@@ -57,10 +59,9 @@
       onchange="setWord(event)"
       placeholder="min"
     />
+    <textarea id="text" placeholder="输入文字"></textarea>
     <div class="page">
-      <div class="content">
-        元素的宽度和高度属性时，你只是设置内容区元素的宽度和高度属性时，你只是设置内容区元素的宽度和高度属性时，你只是设置内容区元素的宽度和高度属性时，你只是设置内容区
-      </div>
+      <div class="content"></div>
     </div>
     <footer id="info"></footer>
   </body>

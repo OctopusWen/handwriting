@@ -16,6 +16,34 @@ const createWindow = () => {
   win.loadFile("index.html");
 };
 
+async function handleChooseFont() {
+  const { canceled, filePaths } = await dialog.showOpenDialog({
+    title: "选择字体文件",
+    filters: [{ name: "Font", extensions: ["ttf"] }],
+    properties: ["openFile"],
+  });
+  if (canceled) {
+    return;
+  }
+
+  if (path.dirname(filePaths[0]) === path.join(__dirname, "resource", "font")) {
+    console.log(path.basename(filePaths[0]));
+    return path.basename(filePaths[0]);
+  }
+
+  let newName = new Date().getTime() + ".ttf";
+  const newPath = path.join(__dirname, "resource", "font", newName);
+  try {
+    await copyFile(filePaths[0], newPath, constants.COPYFILE_EXCL);
+    console.log(newName);
+  } catch {
+    console.log("复制字体失败");
+    newName = "";
+  } finally {
+    return newName;
+  }
+}
+
 async function handleFileOpen() {
   const { canceled, filePaths } = await dialog.showOpenDialog({
     title: "选择背景图片",
@@ -48,7 +76,8 @@ async function handleFileOpen() {
 }
 
 app.whenReady().then(() => {
-  ipcMain.handle("dialog:open", handleFileOpen);
+  ipcMain.handle("dialog:background:open", handleFileOpen);
+  ipcMain.handle("dialog:TTF:open", handleChooseFont);
 
   createWindow();
 

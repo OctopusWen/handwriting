@@ -5,16 +5,35 @@ const { versions } = require("./preload");
 const info = document.getElementById("info");
 const pages = document.getElementsByClassName("page");
 const text = document.getElementsByClassName("content");
+const input = document.getElementById("text");
 
 info.innerText = `本应用使用 Chrome (v${versions.node}), Node.js (v${versions.node}), Electron (v${versions.node})\n 恭喜你的电脑里面又多了一个Chrome！`;
 
-async function openDialog() {
-  const path = await ipcRenderer.invoke("dialog:open");
+async function openBackgroundDialog() {
+  const path = await ipcRenderer.invoke("dialog:background:open");
   // background.setAttribute("src", path);
   console.log(path);
   pages[0].style.backgroundImage = `url(./resource/background/${path})`;
   pages[0].style.backgroundRepeat = "no-repeat";
   pages[0].style.backgroundSize = "contain";
+}
+
+const regex = /([^/]*)\.ttf/;
+
+async function openTTFDialog() {
+  const path = await ipcRenderer.invoke("dialog:TTF:open");
+  console.log(path);
+  if (path) {
+    let match = path.match(regex);
+    let extractedFileName = "f" + match[1];
+    console.log(extractedFileName);
+    const font = new FontFace(
+      extractedFileName,
+      `url(./resource/font/${path})`
+    );
+    document.fonts.add(font);
+    text[0].style.fontFamily = extractedFileName;
+  }
 }
 
 function textPaddings(e) {
@@ -47,7 +66,7 @@ function setWord(e) {
 }
 
 function handleWord() {
-  let str = text[0].innerText;
+  let str = input.value;
   let out = "";
   for (let i in str) {
     let size = Math.round(
