@@ -13,7 +13,6 @@
   <body>
     <button id="openDialog" onclick="openBackgroundDialog()">导入背景</button>
     <button id="openDialog" onclick="openTTFDialog()">导入字体</button>
-    <button id="getWords" onclick="handleWord()">加载文字</button>
 
     <input type="checkbox" name="mask" id="mask" onchange="showMask(event)" />
     <label for="mask">开启蒙版</label>
@@ -60,6 +59,8 @@
       placeholder="min"
     />
     <textarea id="text" placeholder="输入文字"></textarea>
+    <button id="getWords" onclick="handleWord()">加载文字</button>
+
     <div class="page">
       <div class="content"></div>
     </div>
