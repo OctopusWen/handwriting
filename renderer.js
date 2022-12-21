@@ -77,3 +77,19 @@ function handleWord() {
   }
   text[0].innerHTML = out;
 }
+
+var textSettings = {
+  rotateY: 0,
+  rotateX: 0,
+};
+
+function setRotate(e) {
+  textSettings[e.target.name] = +e.target.value;
+  text[0].style.transform =
+    "rotateX(" +
+    textSettings.rotateX +
+    "deg)" +
+    " rotateY(" +
+    textSettings.rotateY +
+    "deg)";
+}
