@@ -72,6 +72,20 @@
       onchange="setRotate(event)"
       placeholder="Y-Rotate"
     />
+    <input
+      class="wordSetting"
+      name="lineHeight"
+      type="number"
+      onchange="setWord(event)"
+      placeholder="Line Height"
+    />
+    <input
+      class="wordSetting"
+      name="marginRight"
+      type="number"
+      onchange="setWord(event)"
+      placeholder="Col Interval"
+    />
     <textarea id="text" placeholder="输入文字"></textarea>
     <button id="getWords" onclick="handleWord()">加载文字</button>
 

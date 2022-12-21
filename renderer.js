@@ -59,10 +59,13 @@ function showMask(e) {
 var wordSettings = {
   sizeMax: 15,
   sizeMin: 10,
+  lineHeight: 0,
+  marginRight: 0,
 };
 
 function setWord(e) {
   wordSettings[e.target.name] = +e.target.value;
+  console.log(wordSettings);
 }
 
 function handleWord() {
@@ -73,7 +76,7 @@ function handleWord() {
       Math.random() * (wordSettings.sizeMax - wordSettings.sizeMin) +
         wordSettings.sizeMin
     );
-    out += `<span style="font-size: ${size}px">${str[i]}</span>`;
+    out += `<span style="font-size: ${size}px; margin-right:${wordSettings.marginRight}px; line-height:${wordSettings.lineHeight}px ">${str[i]}</span>`;
   }
   text[0].innerHTML = out;
 }
