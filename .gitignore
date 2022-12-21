@@ -1,6 +1,9 @@
-.history/*
-node_modules/*
-.vscode/*
+.history/
+node_modules/
+.vscode/
 
 .npmrc
 out/
+
+resource/background/*
+resource/font/*
