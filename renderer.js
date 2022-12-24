@@ -14,6 +14,25 @@ info.innerText = `本应用使用 Chrome (v${versions.node}), Node.js (v${versio
   window.printID = id;
 })();
 
+var wordSettings = {
+  sizeMax: 15,
+  sizeMin: 10,
+  lineHeight: 0,
+  marginRight: 0,
+};
+
+var textSettings = {
+  rotateY: 0,
+  rotateX: 0,
+  bgPath: "",
+  fontPath: "",
+  extractedFileName: "",
+  paddingTop: 0,
+  paddingRight: 0,
+  paddingLeft: 0,
+  paddingBottom: 0,
+};
+
 async function openBackgroundDialog() {
   const path = await ipcRenderer.invoke("dialog:background:open");
   // background.setAttribute("src", path);
@@ -26,6 +45,7 @@ async function openBackgroundDialog() {
     "background:change",
     `./resource/background/${path}`
   );
+  textSettings.bgPath = path;
 }
 
 const regex = /([^/]*)\.ttf/;
@@ -38,6 +58,8 @@ async function openTTFDialog() {
     let extractedFileName = "f" + match[1];
     console.log(extractedFileName);
     ipcRenderer.sendTo(printID, "font:change", extractedFileName, path);
+    textSettings.extractedFileName = extractedFileName;
+    textSettings.fontPath = path;
     // const font = new FontFace(
     //   extractedFileName,
     //   `url(./resource/font/${path})`
@@ -49,7 +71,7 @@ async function openTTFDialog() {
 
 function textPaddings(e) {
   ipcRenderer.sendTo(printID, "text:padding", e.target.name, e.target.value);
-
+  textSettings[e.target.name] = e.target.value;
   // text[0].style[e.target.name] = e.target.value + "px";
 }
 
@@ -70,20 +92,13 @@ function showMask(e) {
 //   });
 // }
 
-var wordSettings = {
-  sizeMax: 15,
-  sizeMin: 10,
-  lineHeight: 0,
-  marginRight: 0,
-};
-
 function setWord(e) {
   wordSettings[e.target.name] = +e.target.value;
   console.log(wordSettings);
 }
 
 function handleWord() {
-  let str = input.value;
+  let str = input.value.substring(0, 400);
   let out = "";
   for (let i in str) {
     let size = Math.round(
@@ -96,11 +111,6 @@ function handleWord() {
   ipcRenderer.sendTo(printID, "word:content", out);
 }
 
-var textSettings = {
-  rotateY: 0,
-  rotateX: 0,
-};
-
 function setRotate(e) {
   textSettings[e.target.name] = +e.target.value;
   // text[0].style.transform =
@@ -111,4 +121,8 @@ function setRotate(e) {
   //   textSettings.rotateY +
   //   "deg)";
   ipcRenderer.sendTo(printID, "text:rotate", textSettings);
+}
+
+function sendPrint() {
+  ipcRenderer.sendTo(printID, "print", textSettings, wordSettings, input.value);
 }

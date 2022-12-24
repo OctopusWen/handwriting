@@ -19,8 +19,8 @@ const createWindow = () => {
   // const { port1, port2 } = new MessageChannelMain();
   const win = new BrowserWindow({
     name: "panel",
-    width: 800,
-    height: 1000,
+    width: 580,
+    height: 470,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -31,8 +31,8 @@ const createWindow = () => {
   win.loadFile("index.html");
   const print = new BrowserWindow({
     name: "print",
-    width: 500,
-    height: 707,
+    width: 570,
+    height: 730,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
