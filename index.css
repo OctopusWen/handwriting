@@ -1,3 +1,43 @@
+#panel{
+    display: grid;
+}
+
+#file{
+    display: grid;
+    grid-template-columns: fit-content(100%) fit-content(100%);
+    justify-content:space-around;
+}
+
+#paddingCtrl{
+    display: grid;
+    grid-template-areas:
+    ". top ."
+    "left . right"
+    ". bottom ."
+    ;
+}
+
+label{
+    font-size: small;
+}
+
+.textPadding{
+    width:min-content;
+    justify-content: space-around;
+}
+
+#paddingTop{
+    grid-area: top;
+}
+#paddingRight{
+    grid-area: right;
+}
+#paddingLeft{
+    grid-area: left;
+}
+#paddingBottom{
+    grid-area: bottom;
+}
 .page{
     height: 707px;
     width: 500px;

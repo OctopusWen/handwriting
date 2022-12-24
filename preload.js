@@ -19,3 +19,12 @@ module.exports = {
     electron: process.versions.electron,
   },
 };
+
+// ipcRenderer.on("port", (e) => {
+//   // port received, make it globally available.
+//   window.electronMessagePort = e.ports[0];
+
+//   window.electronMessagePort.onmessage = (messageEvent) => {
+//     console.log(messageEvent);
+//   };
+// });

@@ -3,19 +3,29 @@ const { ipcRenderer } = require("electron");
 const { versions } = require("./preload");
 
 const info = document.getElementById("info");
-const pages = document.getElementsByClassName("page");
-const text = document.getElementsByClassName("content");
+// const pages = document.getElementsByClassName("page");
+// const text = document.getElementsByClassName("content");
 const input = document.getElementById("text");
 
 info.innerText = `本应用使用 Chrome (v${versions.node}), Node.js (v${versions.node}), Electron (v${versions.node})\n 恭喜你的电脑里面又多了一个Chrome！`;
+
+(async function getPrint() {
+  let id = await ipcRenderer.invoke("get:print");
+  window.printID = id;
+})();
 
 async function openBackgroundDialog() {
   const path = await ipcRenderer.invoke("dialog:background:open");
   // background.setAttribute("src", path);
   console.log(path);
-  pages[0].style.backgroundImage = `url(./resource/background/${path})`;
-  pages[0].style.backgroundRepeat = "no-repeat";
-  pages[0].style.backgroundSize = "contain";
+  // pages[0].style.backgroundImage = `url(./resource/background/${path})`;
+  // pages[0].style.backgroundRepeat = "no-repeat";
+  // pages[0].style.backgroundSize = "contain";
+  ipcRenderer.sendTo(
+    printID,
+    "background:change",
+    `./resource/background/${path}`
+  );
 }
 
 const regex = /([^/]*)\.ttf/;
@@ -27,25 +37,29 @@ async function openTTFDialog() {
     let match = path.match(regex);
     let extractedFileName = "f" + match[1];
     console.log(extractedFileName);
-    const font = new FontFace(
-      extractedFileName,
-      `url(./resource/font/${path})`
-    );
-    document.fonts.add(font);
-    text[0].style.fontFamily = extractedFileName;
+    ipcRenderer.sendTo(printID, "font:change", extractedFileName, path);
+    // const font = new FontFace(
+    //   extractedFileName,
+    //   `url(./resource/font/${path})`
+    // );
+    // document.fonts.add(font);
+    // text[0].style.fontFamily = extractedFileName;
   }
 }
 
 function textPaddings(e) {
-  text[0].style[e.target.name] = e.target.value + "px";
+  ipcRenderer.sendTo(printID, "text:padding", e.target.name, e.target.value);
+
+  // text[0].style[e.target.name] = e.target.value + "px";
 }
 
 function showMask(e) {
-  if (e.target.checked) {
-    text[0].style.backgroundColor = "rgba(58, 114, 215, 0.5)";
-  } else {
-    text[0].style.backgroundColor = "transparent";
-  }
+  ipcRenderer.sendTo(printID, "mask:show", e.target.checked);
+  // if (e.target.checked) {
+  //   text[0].style.backgroundColor = "rgba(58, 114, 215, 0.5)";
+  // } else {
+  //   text[0].style.backgroundColor = "transparent";
+  // }
 }
 
 // for (let i in textMargins) {
@@ -78,7 +92,8 @@ function handleWord() {
     );
     out += `<span style="font-size: ${size}px; margin-right:${wordSettings.marginRight}px; line-height:${wordSettings.lineHeight}px ">${str[i]}</span>`;
   }
-  text[0].innerHTML = out;
+  // text[0].innerHTML = out;
+  ipcRenderer.sendTo(printID, "word:content", out);
 }
 
 var textSettings = {
@@ -88,11 +103,12 @@ var textSettings = {
 
 function setRotate(e) {
   textSettings[e.target.name] = +e.target.value;
-  text[0].style.transform =
-    "rotateX(" +
-    textSettings.rotateX +
-    "deg)" +
-    " rotateY(" +
-    textSettings.rotateY +
-    "deg)";
+  // text[0].style.transform =
+  //   "rotateX(" +
+  //   textSettings.rotateX +
+  //   "deg)" +
+  //   " rotateY(" +
+  //   textSettings.rotateY +
+  //   "deg)";
+  ipcRenderer.sendTo(printID, "text:rotate", textSettings);
 }

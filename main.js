@@ -1,9 +1,24 @@
-const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  dialog,
+  MessageChannelMain,
+} = require("electron");
 const { copyFile, constants } = require("node:fs/promises");
 const path = require("path");
 
+if (process.env.dev === "true") {
+  try {
+    require("electron-reloader")(module);
+  } catch {}
+}
+var windowID = {};
+
 const createWindow = () => {
+  // const { port1, port2 } = new MessageChannelMain();
   const win = new BrowserWindow({
+    name: "panel",
     width: 800,
     height: 1000,
     webPreferences: {
@@ -12,8 +27,33 @@ const createWindow = () => {
       preload: path.join(__dirname, "preload.js"),
     },
   });
-  win.webContents.openDevTools({ mode: "detach" });
+
   win.loadFile("index.html");
+  const print = new BrowserWindow({
+    name: "print",
+    width: 500,
+    height: 707,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      preload: path.join(__dirname, "preloadPrint.js"),
+    },
+  });
+
+  windowID["print"] = print.id;
+  console.log(BrowserWindow.getAllWindows());
+  print.loadFile("print.html");
+  if (process.env.dev === "true") {
+    print.webContents.openDevTools({ mode: "detach" });
+
+    win.webContents.openDevTools({ mode: "detach" });
+  }
+  // win.once("ready-to-show", () => {
+  //   win.webContents.postMessage("port", null, [port1]);
+  // });
+  // print.once("ready-to-show", () => {
+  //   win.webContents.postMessage("port", null, [port2]);
+  // });
 };
 
 async function handleChooseFont() {
@@ -78,6 +118,7 @@ async function handleFileOpen() {
 app.whenReady().then(() => {
   ipcMain.handle("dialog:background:open", handleFileOpen);
   ipcMain.handle("dialog:TTF:open", handleChooseFont);
+  ipcMain.handle("get:print", () => windowID.print);
 
   createWindow();
 

@@ -2,96 +2,117 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <!-- <meta
-      http-equiv="X-Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    /> -->
-    <title>Hello from Electron renderer!</title>
+    <title>手写模拟器</title>
     <script defer src="./renderer.js"></script>
     <link href="./index.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <button id="openDialog" onclick="openBackgroundDialog()">导入背景</button>
-    <button id="openDialog" onclick="openTTFDialog()">导入字体</button>
+    <div id="panel">
+      <div id="file">
+        <button id="openDialog" onclick="openBackgroundDialog()">
+          导入背景
+        </button>
+        <button id="openDialog" onclick="openTTFDialog()">导入字体</button>
+      </div>
 
-    <input type="checkbox" name="mask" id="mask" onchange="showMask(event)" />
-    <label for="mask">开启蒙版</label>
-    <input
-      class="textPadding"
-      name="paddingTop"
-      type="number"
-      onchange="textPaddings(event)"
-      placeholder="top"
-    />
-    <input
-      class="textPadding"
-      name="paddingRight"
-      type="number"
-      onchange="textPaddings(event)"
-      placeholder="right"
-    />
-    <input
-      class="textPadding"
-      name="paddingLeft"
-      type="number"
-      onchange="textPaddings(event)"
-      placeholder="left"
-    />
-    <input
-      class="textPadding"
-      name="paddingBottom"
-      type="number"
-      onchange="textPaddings(event)"
-      placeholder="bottom"
-    />
-    <input
-      class="wordSetting"
-      name="sizeMax"
-      type="number"
-      onchange="setWord(event)"
-      placeholder="max"
-    />
-    <input
-      class="wordSetting"
-      name="sizeMin"
-      type="number"
-      onchange="setWord(event)"
-      placeholder="min"
-    />
-    <input
-      class="textRotate"
-      name="rotateX"
-      type="number"
-      onchange="setRotate(event)"
-      placeholder="X-Rotate"
-    />
-    <input
-      class="textRotate"
-      name="rotateY"
-      type="number"
-      onchange="setRotate(event)"
-      placeholder="Y-Rotate"
-    />
-    <input
-      class="wordSetting"
-      name="lineHeight"
-      type="number"
-      onchange="setWord(event)"
-      placeholder="Line Height"
-    />
-    <input
-      class="wordSetting"
-      name="marginRight"
-      type="number"
-      onchange="setWord(event)"
-      placeholder="Col Interval"
-    />
-    <textarea id="text" placeholder="输入文字"></textarea>
-    <button id="getWords" onclick="handleWord()">加载文字</button>
+      <div id="textCtrl">
+        <input
+          type="checkbox"
+          name="mask"
+          id="mask"
+          onchange="showMask(event)"
+        />
+        <label for="mask">开启蒙版</label>
+        <br />
+        <br />
+        <div id="paddingCtrl">
+          <label>整体边距</label>
+          <input
+            class="textPadding"
+            name="paddingTop"
+            id="paddingTop"
+            type="number"
+            onchange="textPaddings(event)"
+            placeholder="top"
+          />
+          <input
+            class="textPadding"
+            name="paddingRight"
+            id="paddingRight"
+            type="number"
+            onchange="textPaddings(event)"
+            placeholder="right"
+          />
+          <input
+            class="textPadding"
+            name="paddingLeft"
+            id="paddingLeft"
+            type="number"
+            onchange="textPaddings(event)"
+            placeholder="left"
+          />
+          <input
+            class="textPadding"
+            name="paddingBottom"
+            id="paddingBottom"
+            type="number"
+            onchange="textPaddings(event)"
+            placeholder="bottom"
+          />
+        </div>
+      </div>
+      <div id="wordCtrl">
+        <input
+          class="wordSetting"
+          name="sizeMax"
+          type="number"
+          onchange="setWord(event)"
+          placeholder="max"
+        />
+        <input
+          class="wordSetting"
+          name="sizeMin"
+          type="number"
+          onchange="setWord(event)"
+          placeholder="min"
+        />
+        <input
+          class="textRotate"
+          name="rotateX"
+          type="number"
+          onchange="setRotate(event)"
+          placeholder="X-Rotate"
+        />
+        <input
+          class="textRotate"
+          name="rotateY"
+          type="number"
+          onchange="setRotate(event)"
+          placeholder="Y-Rotate"
+        />
+        <input
+          class="wordSetting"
+          name="lineHeight"
+          type="number"
+          onchange="setWord(event)"
+          placeholder="Line Height"
+        />
+        <input
+          class="wordSetting"
+          name="marginRight"
+          type="number"
+          onchange="setWord(event)"
+          placeholder="Col Interval"
+        />
+      </div>
 
-    <div class="page">
-      <div class="content"></div>
+      <textarea id="text" placeholder="输入文字"></textarea>
+      <button id="getWords" onclick="handleWord()">加载文字</button>
     </div>
+
+    <!-- <div class="page">
+      <div class="content"></div>
+    </div> -->
     <footer id="info"></footer>
   </body>
 </html>
