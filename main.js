@@ -43,6 +43,9 @@ const createWindow = () => {
   windowID["print"] = print.id;
   console.log(BrowserWindow.getAllWindows());
   print.loadFile("print.html");
+  ipcMain.handle("print", () => {
+    print.webContents.print({ printBackground: true });
+  });
   if (process.env.dev === "true") {
     print.webContents.openDevTools({ mode: "detach" });
 

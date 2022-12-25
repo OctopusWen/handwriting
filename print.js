@@ -40,6 +40,7 @@ ipcRenderer.on("word:content", (e, content) => {
 });
 
 ipcRenderer.on("print", (e, textSettings, wordSettings, input) => {
+  const preview = document.getElementsByTagName("body")[0].children;
   let str = input;
   var strArr = [];
   let cnt = 0;
@@ -82,5 +83,8 @@ ipcRenderer.on("print", (e, textSettings, wordSettings, input) => {
     document.getElementsByTagName("body")[0].appendChild(page);
   }
   console.log(pages);
-  // document.getElementsByTagName("body")[0].appendChild(pages);
+
+  ipcRenderer.invoke("print");
+
+  document.getElementsByTagName("body")[0].children = preview;
 });

@@ -1,8 +1,9 @@
 .page{
-    height: 707px;
-    width: 500px;
+    height: 842px;
+    width: 595px;
     background-repeat: no-repeat;
     background-size: contain;
+    -webkit-print-color-adjust: exact;
 }
 
 .content{
@@ -12,4 +13,10 @@
     max-height: 100%;
     max-width: 100%;
     background-clip: content-box;
+}
+
+@media print {
+    .page{
+        page-break-after: always;
+    }
 }
